@@ -45,9 +45,10 @@
             const editbtn = document.createElement("button");
             editbtn.append("Edit");
             editbtn.addEventListener("click", async () => { await GetCarById(car.id) });
+
             const deletebtn = document.createElement("button");
             deletebtn.append("Delete");
-            deletebtn.addEventListener("click", async () => { await DeleteCar() });
+            deletebtn.addEventListener("click", async () => { await DeleteCar(car.id) });
 
             td.append(editbtn);
             td.append(deletebtn);
@@ -121,8 +122,8 @@
             }
         }
 
-        async function DeleteCar(carid) {
-            const response = await fetch(`api/cars/${carid}`, 
+        async function DeleteCar(id) {
+            const response = await fetch(`api/cars/${id}`, 
             {
                 method: "DELETE",
                 headers: {
