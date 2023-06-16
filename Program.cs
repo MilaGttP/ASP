@@ -1,6 +1,6 @@
 
 using System.Text.RegularExpressions;
-using ASP;
+using ASP.Classes;
 
 List<Car> cars = new List<Car>()
 {
@@ -38,12 +38,12 @@ app.Run(async (context) =>
     }
     else if (Regex.IsMatch(path, expressionForGuid) && request.Method == "DELETE")
     {
-
+        await DeleteCar(response, request);
     }
     else
     {
         response.ContentType = "text/html; charset=utf-8";
-        await response.SendFileAsync("pages/index.html");
+        await response.SendFileAsync("Pages/index.html");
     }
 });
 
@@ -100,16 +100,40 @@ async Task GetCarById(HttpResponse httpResponse, string id)
 
 async Task UpdateCar(HttpResponse httpResponse, HttpRequest httpRequest)
 {
-    Car car = await httpRequest.ReadFromJsonAsync<Car>();
-    if (car != null)
+    try
     {
-        Car oldCar = cars.FirstOrDefault(o => o.Id == car.Id);
-        if (oldCar != null)
+        Car car = await httpRequest.ReadFromJsonAsync<Car>();
+        if (car != null)
         {
-            oldCar.Brand = car.Brand;
-            oldCar.Model = car.Model;
-            oldCar.Year = car.Year;
-            await httpResponse.WriteAsJsonAsync(oldCar);
+            Car oldCar = cars.FirstOrDefault(o => o.Id == car.Id);
+            if (oldCar != null)
+            {
+                oldCar.Brand = car.Brand;
+                oldCar.Model = car.Model;
+                oldCar.Year = car.Year;
+                await httpResponse.WriteAsJsonAsync(oldCar);
+            }
         }
+        else
+        {
+            throw new Exception("404 Error!");
+        }
+    }
+    catch (Exception ex)
+    {
+        httpResponse.StatusCode = 404;
+        await httpResponse.WriteAsJsonAsync(new { message = ex.Message });
+    }
+}
+
+async Task DeleteCar(HttpResponse httpResponse, HttpRequest httpRequest)
+{
+    try
+    {
+        
+    }
+    catch (Exception ex)
+    {
+        await httpResponse.WriteAsJsonAsync(new { message = ex.Message });
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace ASP
+﻿namespace ASP.Classes
 {
     public class Car
     {
