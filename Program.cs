@@ -38,7 +38,9 @@ app.Run(async (context) =>
     }
     else if (Regex.IsMatch(path, expressionForGuid) && request.Method == "DELETE")
     {
-        await DeleteCar(response, request);
+        string id = path.Value?.Split("/")[3];
+        await GetCarById(response, id);
+        await DeleteCar(id, response, request);
     }
     else
     {
@@ -126,14 +128,24 @@ async Task UpdateCar(HttpResponse httpResponse, HttpRequest httpRequest)
     }
 }
 
-async Task DeleteCar(HttpResponse httpResponse, HttpRequest httpRequest)
+async Task DeleteCar(string id, HttpResponse httpResponse, HttpRequest httpRequest)
 {
     try
     {
-        
+        Car? car = cars.FirstOrDefault((u) => u.Id == id);
+        if (car != null)
+        {
+            cars.Remove(car);
+            await httpResponse.WriteAsJsonAsync(car);
+        }
+        else
+        {
+            throw new Exception("Car not found!");
+        }
     }
     catch (Exception ex)
     {
+        httpResponse.StatusCode = 404;
         await httpResponse.WriteAsJsonAsync(new { message = ex.Message });
     }
 }

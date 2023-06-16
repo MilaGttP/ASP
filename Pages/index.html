@@ -47,6 +47,7 @@
             editbtn.addEventListener("click", async () => { await GetCarById(car.id) });
             const deletebtn = document.createElement("button");
             deletebtn.append("Delete");
+            deletebtn.addEventListener("click", async () => { await DeleteCar() });
 
             td.append(editbtn);
             td.append(deletebtn);
@@ -114,10 +115,15 @@
                 const car = await response.json();
                 document.querySelector(`tr[data-rowid='${car.id}']`).replaceWith(CreateRow(car));
             }
+            else {
+                const error = await response.json();
+                console.log(error.message);
+            }
         }
 
         async function DeleteCar(carid) {
-            const response = await fetch(`api/cars/${carid}`, {
+            const response = await fetch(`api/cars/${carid}`, 
+            {
                 method: "DELETE",
                 headers: {
                     "Accept": "application/json",
@@ -127,10 +133,11 @@
 
             if (response.ok === true) {
                 const car = await response.json();
-                const row = document.querySelector(`tr[data-rowid='${car.id}']`);
-                if (row) {
-                    row.remove();
-                }
+                document.querySelector(`tr[data-rowid='${car.id}']`).remove();
+            }
+            else {
+                const error = await response.json();
+                console.log(error.message);
             }
         }
 
@@ -156,7 +163,13 @@
                 const body = document.querySelector("tbody");
                 cars.forEach(car => body.append(CreateRow(car)));
             }
+            else {
+                const error = await response.json();
+                console.log(error.message);
+            }
         }
+
+        document.getElementById("resetbtn").addEventListener("click", () => Reset());
 
         document.getElementById("savebtn").addEventListener("click", async () => {
             const carid = document.getElementById("carid").value;
