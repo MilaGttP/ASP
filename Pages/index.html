@@ -1,0 +1,165 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <input type="hidden" id="carid" />
+        <input id="brandid" placeholder="brand" />
+        <input id="modelid" placeholder="model" />
+        <input id="yearid" placeholder="year" />
+        <button id="savebtn">Save</button>
+        <button id="resetbtn">Reset</button>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Brand</th>
+                <th>Model</th>
+                <th>Year</th>
+                <th>Buttons</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <script>
+
+        async function EditCar(carid, brandid, modelid, yearid) {
+            const response = await fetch(`api/cars`,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        id: carid, brand: brandid,
+                        model: modelid, year: parseInt(yearid, 10)
+                    })
+                });
+
+            if (response.ok === true) {
+                const car = await response.json();
+                document.querySelector(`tr[data-rowid='${car.id}']`)
+                    .replaceWith(CreateRow(car));
+            }
+        }
+
+        async function GetCarById(id) {
+            const response = await fetch(`api/cars/${id}`,
+                {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json"
+                    }
+                });
+
+            if (response.ok === true) {
+                const car = await response.json();
+                document.getElementById("carid").value = car.id;
+                document.getElementById("brandid").value = car.brand;
+                document.getElementById("modelid").value = car.model;
+                document.getElementById("yearid").value = car.year;
+            }
+        }
+
+        function Reset() {
+            document.getElementById("carid").value = "";
+            document.getElementById("brandid").value = "";
+            document.getElementById("modelid").value = "";
+            document.getElementById("yearid").value = "";
+        }
+
+        async function CreateCar(brandid, modelid, yearid)
+        {
+            const response = await fetch("api/cars",
+                {
+                    method: "POST",
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ brand: brandid, model: modelid, year: parseInt(yearid, 10) })
+                });
+
+            if (response.ok === true) {
+                const car = await response.json();
+                document.querySelector("tbody").append(CreateRow(car));
+            }
+            else {
+                const error = await response.json();
+                console.log(error);
+            }
+            Reset();
+        }
+
+        function CreateRow(car)
+        {
+            const tr = document.createElement("tr");
+            tr.setAttribute("data-rowid", car.id);
+            const brandtd = document.createElement("td");
+            brandtd.append(car.brand);
+            tr.append(brandtd);
+            const modeltd = document.createElement("td");
+            modeltd.append(car.model);
+            tr.append(modeltd);
+            const yeartd = document.createElement("td");
+            yeartd.append(car.year);
+            tr.append(yeartd);
+
+            const td = document.createElement("td");
+
+            const editbtn = document.createElement("button");
+            editbtn.append("Edit");
+            editbtn.addEventListener("click", async () => { await GetCarById(car.id) });
+            const deletebtn = document.createElement("button");
+            deletebtn.append("Delete");
+
+            td.append(editbtn);
+            td.append(deletebtn);
+
+            tr.appendChild(td);
+
+            return tr;
+        }
+
+        async function GetAllCars()
+        {
+            const response = await fetch("api/cars",
+                {
+                    method: "GET",
+                    headers: {
+                        "Accept": "application/json"
+                    },
+                });
+
+            if (response.ok === true) {
+                const cars = await response.json();
+                const body = document.querySelector("tbody");
+                cars.forEach(car => body.append(CreateRow(car)));
+            }
+        }
+
+        document.getElementById("savebtn").addEventListener("click", async () => {
+            const carid = document.getElementById("carid").value;
+            const brandid = document.getElementById("brandid").value;
+            const modelid = document.getElementById("modelid").value;
+            const yearid = document.getElementById("yearid").value;
+
+            if (carid === "") {
+                await CreateCar(brandid, modelid, yearid);
+            }
+            else {
+                await EditCar(carid, brandid, modelid, yearid);
+            }
+            Reset();
+        });
+
+        GetAllCars();
+
+    </script>
+</body>
+</html>
