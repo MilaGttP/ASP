@@ -39,8 +39,7 @@ app.Run(async (context) =>
     else if (Regex.IsMatch(path, expressionForGuid) && request.Method == "DELETE")
     {
         string id = path.Value?.Split("/")[3];
-        await GetCarById(response, id);
-        await DeleteCar(id, response, request);
+        await DeleteCar(id, response);
     }
     else
     {
@@ -128,7 +127,7 @@ async Task UpdateCar(HttpResponse httpResponse, HttpRequest httpRequest)
     }
 }
 
-async Task DeleteCar(string id, HttpResponse httpResponse, HttpRequest httpRequest)
+async Task DeleteCar(string id, HttpResponse httpResponse)
 {
     try
     {
