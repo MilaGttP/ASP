@@ -3,8 +3,470 @@
 <head>
     <meta charset="utf-8" />
     <title>Bikes about</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=EB+Garamond:wght@400;700&display=swap');
+
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        body {
+            background-color: #7e7e7e;
+        }
+
+        a, img, span {
+            display: block;
+        }
+
+        header {
+            background-color: #242424;
+            padding: 20px 50px;
+            display: flex;
+            align-items: center;
+        }
+
+            header a {
+                color: whitesmoke;
+                text-decoration: none;
+            }
+
+        nav {
+            margin-left: 100px;
+        }
+
+            nav ul {
+                list-style: none;
+                display: flex;
+                justify-content: space-between;
+                width: 450px;
+            }
+
+        .active {
+            color: #db810b;
+            text-decoration: underline;
+        }
+
+        .menu_btn {
+            width: 48px;
+            display: none;
+        }
+
+        .content {
+            width: 1200px;
+            margin: 50px auto;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .main {
+            background-color: #f1f1f1;
+            width: 800px;
+        }
+
+        .side {
+            width: 350px;
+        }
+
+        .main h3 {
+            margin: 35px 0 15px 35px;
+        }
+
+        .main span {
+            margin: 0 0 15px 35px;
+            color: #db810b;
+            font-size: 12px;
+        }
+
+        .main img {
+            width: 100%;
+        }
+
+        .main p {
+            margin: 15px 15px 35px 35px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .side-top, .side-bottom {
+            background-color: #f1f1f1;
+            padding: 35px 15px;
+        }
+
+        .side-top {
+            margin-bottom: 20px;
+        }
+
+            .side-top div {
+                display: flex;
+                justify-content: space-between;
+                margin: 15px 0;
+                align-items: center;
+            }
+
+            .side-top img {
+                width: 48px;
+                height: 48px;
+            }
+
+            .side-top p {
+                font-size: 12px;
+                width: 260px;
+            }
+
+        .side-bottom {
+            padding: 35px 15px;
+        }
+
+            .side-bottom p {
+                font-size: 14px;
+                line-height: 1.5;
+            }
+
+
+        .news {
+            width: 1200px;
+            margin: 50px auto;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .news_item {
+            width: 580px;
+            background-color: #f1f1f1;
+            padding: 35px 15px;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+            .news_item img {
+                width: 55%;
+                object-fit: cover;
+            }
+
+            .news_item div {
+                padding: 35px 15px;
+            }
+
+            .news_item h3 {
+                padding-bottom: 10px;
+            }
+
+            .news_item span {
+                padding-bottom: 10px;
+                color: #db810b;
+                font-size: 12px;
+            }
+
+            .news_item p {
+                padding-bottom: 20px;
+                line-height: 1.5;
+            }
+
+            .news_item a {
+                color: #db810b;
+                border: 2px solid #db810b;
+                text-decoration: none;
+                padding: 10px;
+                text-align: center;
+                transition: 0.2s ease-in;
+            }
+
+                .news_item a:hover {
+                    color: white;
+                    background-color: #db810b;
+                }
+
+        .courses {
+            width: 1200px;
+            margin: 50px auto;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .courses_item {
+            width: 500px;
+            margin-bottom: 30px;
+        }
+
+        .img {
+            width: 100%;
+            height: 250px;
+            background-image: url(img/courses.webp);
+            background-size: cover;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+            .img span {
+                text-align: right;
+                font-weight: bold;
+                color: #b90606;
+                font-size: 25px;
+            }
+
+            .img h2 {
+                font-size: 25px;
+                color: #5b5b5b;
+            }
+
+        .text {
+            background-color: #f1f1f1;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+            .text span {
+                color: #db810b;
+                font-size: 12px;
+            }
+
+            .text a {
+                text-decoration: none;
+                background-color: #db810b;
+                color: whitesmoke;
+                font-weight: bold;
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+
+
+        .tests {
+            width: 1200px;
+            margin: 50px auto;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .test_item {
+            width: 500px;
+            background-color: #dadada;
+            margin-bottom: 40px;
+            box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
+            filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.3));
+        }
+
+            .test_item img {
+                width: 100%;
+            }
+
+        .test_content {
+            padding: 20px;
+            justify-content: center;
+        }
+
+            .test_content h3 {
+                margin-bottom: 10px;
+                text-align: center;
+            }
+
+            .test_content p {
+                margin-bottom: 10px;
+                text-align: center;
+            }
+
+            .test_content a {
+                text-decoration: none;
+                padding: 10px;
+                color: #db810b;
+                border: 2px solid #db810b;
+                text-align: center;
+                transition: 0.5s ease-in-out;
+            }
+
+                .test_content a:hover {
+                    color: #f1f1f1;
+                    background-color: #db810b;
+                }
+
+
+        .events {
+            width: 1000px;
+            margin: 50px auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .image_events {
+            width: 300px;
+            text-align: center;
+        }
+
+            .image_events img {
+                width: 90%;
+                height: 150px;
+                object-fit: cover;
+                margin-bottom: 30px;
+                border: 1px solid white;
+                padding: 5px;
+            }
+
+        .text_events {
+            width: 300px;
+            text-align: center;
+        }
+
+            .text_events h2 {
+                font-size: 30px;
+                margin-bottom: 15px;
+            }
+
+        .line {
+            width: 120px;
+            height: 1px;
+            background-color: #db810b;
+            margin: 0 auto;
+            margin-bottom: 15px;
+        }
+
+        .text_events h3 {
+            margin-bottom: 15px;
+            color: whitesmoke;
+        }
+
+        .text_events p {
+            margin-bottom: 15px;
+            font-size: 14px;
+            font-style: italic;
+        }
+
+        .text_events a {
+            display: block;
+            width: 150px;
+            margin: 15px auto;
+            text-align: center;
+            border: 2px solid #db810b;
+            padding: 10px 0;
+            color: #db810b;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.5s ease-in-out;
+            border-radius: 8px;
+        }
+
+            .text_events a:hover {
+                background-color: #db810b;
+                color: #e3e3e3;
+            }
+
+        hr {
+            width: 1000px;
+            margin: 0 auto;
+            border: 0;
+            height: 1px;
+            background-color: #000;
+            background-image: -webkit-linear-gradient(left, #7e7e7e, #000, #7e7e7e);
+            background-image: -moz-linear-gradient(left, #7e7e7e, #000, #7e7e7e);
+            background-image: -ms-linear-gradient(left, #7e7e7e, #000, #7e7e7e);
+            background-image: -o-linear-gradient(left, #7e7e7e, #000, #7e7e7e);
+        }
+
+        .jobs {
+            width: 1000px;
+            margin: 50px auto;
+        }
+
+        .header_info h2, .header_info p {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .header_info h2, .header_info h4 {
+            color: rgb(41, 41, 41);
+        }
+
+        .job_card {
+            width: 900px;
+            margin: 25px auto;
+            background-color: #d8d8d8;
+            display: flex;
+            justify-content: space-between;
+            padding: 25px;
+            border-radius: 10px;
+            align-items: center;
+        }
+
+        .text_job h2 {
+            margin-bottom: 10px;
+        }
+
+        .text_job span {
+            display: inline;
+            color: #7e7e7e;
+            margin-right: 25px;
+        }
+
+        .jobs a {
+            background-color: #db810b;
+            color: whitesmoke;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+    </style>
 </head>
 <body>
-
+    <div class="jobs">
+        <div class="header_info">
+            <h2>Careers at Acme</h2>
+            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aut vitae quidem dignissimos quod nesciunt
+                magni, voluptate
+                autem nihil soluta eveniet.</p>
+            <h4>Current openings</h4>
+        </div>
+        <div class="job_card">
+            <div class="text_job">
+                <h2>Software Engineer</h2>
+                <span> <i class="icon-clock"></i> Full time</span>
+                <span> <i class="icon-location"></i> New York City, US</span>
+            </div>
+            <a href="">View job</a>
+        </div>
+        <div class="job_card">
+            <div class="text_job">
+                <h2>Web Developer</h2>
+                <span> <i class="icon-clock"></i> Part time</span>
+                <span> <i class="icon-location"></i> Los Angeles, US</span>
+            </div>
+            <a href="">View job</a>
+        </div>
+        <div class="job_card">
+            <div class="text_job">
+                <h2>Game Developer</h2>
+                <span> <i class="icon-clock"></i> Full time</span>
+                <span> <i class="icon-location"></i> London, UK</span>
+            </div>
+            <a href="">View job</a>
+        </div>
+        <div class="job_card">
+            <div class="text_job">
+                <h2>C# Developer</h2>
+                <span> <i class="icon-clock"></i> Part time</span>
+                <span> <i class="icon-location"></i> Boston, US</span>
+            </div>
+            <a href="">View job</a>
+        </div>
+        <div class="job_card">
+            <div class="text_job">
+                <h2>Web Designer</h2>
+                <span> <i class="icon-clock"></i> Part time</span>
+                <span> <i class="icon-location"></i> Ohio, US</span>
+            </div>
+            <a href="">View job</a>
+        </div>
+    </div>
 </body>
 </html>

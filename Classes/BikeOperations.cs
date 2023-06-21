@@ -43,7 +43,7 @@
                 Bike? bike = bikes.FirstOrDefault(x => x.Id == id);
                 if (bikes != null)
                 {
-                    await httpResponse.WriteAsJsonAsync(bikes);
+                    await httpResponse.WriteAsJsonAsync(bike);
                 }
                 else
                 {

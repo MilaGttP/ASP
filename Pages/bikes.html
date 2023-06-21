@@ -58,8 +58,8 @@
             return tr;
         }
 
-        async function GetBikeById(Id) {
-            const response = await fetch(`/api/bikes/${Id}`,
+        async function GetBikeById(id) {
+            const response = await fetch(`/api/bikes/${id}`,
                     {
                         method: "GET",
                         headers: {
@@ -70,13 +70,12 @@
            
             if (response.ok === true) {
                 const bike = await response.json();
-                console.log(await response);
-                    document.getElementById("bikeid").value = bike.id;
-                    document.getElementById("modelid").value = bike.model;
-                    document.getElementById("yearid").value = bike.year;
-                    document.getElementById("priceid").value = bike.price;
+                document.getElementById("bikeid").value = bike.id;
+                document.getElementById("modelid").value = bike.model;
+                document.getElementById("yearid").value = bike.year;
+                document.getElementById("priceid").value = bike.price;
             }
-             else {
+            else {
                 const error = await response.json();
                 console.log(error);
             }
