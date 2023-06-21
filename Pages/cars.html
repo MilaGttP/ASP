@@ -74,6 +74,10 @@
                     document.getElementById("modelid").value = car.model;
                     document.getElementById("yearid").value = car.year;
             }
+            else {
+                    const error = await response.json();
+                    console.log(error.message);
+                }
         }
 
         async function CreateCar(brandid, modelid, yearid) {
