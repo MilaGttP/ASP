@@ -1,0 +1,198 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Bikes task</title>
+</head>
+<body>
+    <div>
+        <input type="hidden" id="bikeid" />
+        <input id="modelid" placeholder="model" />
+        <input id="yearid" placeholder="year" />
+        <input id="priceid" placeholder="price" />
+        <button id="savebtn">Save</button>
+        <button id="resetbtn">Reset</button>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Model</th>
+                <th>Year</th>
+                <th>Price</th>
+                <th>Buttons</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <script>
+
+        function CreateRow(bike) {
+            const tr = document.createElement("tr");
+            tr.setAttribute("data-rowid", bike.id);
+            const modeltd = document.createElement("td");
+            modeltd.append(bike.model);
+            tr.append(modeltd);
+            const yeartd = document.createElement("td");
+            yeartd.append(bike.year);
+            tr.append(yeartd);
+            const pricetd = document.createElement("td");
+            pricetd.append(bike.price);
+            tr.append(pricetd);
+
+            const td = document.createElement("td");
+
+            const editbtn = document.createElement("button");
+            editbtn.append("Edit");
+            editbtn.addEventListener("click", async () => { await GetBikeById(bike.id) });
+
+            const deletebtn = document.createElement("button");
+            deletebtn.append("Delete");
+            deletebtn.addEventListener("click", async () => { await DeleteBike(bike.id) });
+
+            td.append(editbtn);
+            td.append(deletebtn);
+
+            tr.appendChild(td);
+
+            return tr;
+        }
+
+        async function GetBikeById(Id) {
+            const response = await fetch(`/api/bikes/${Id}`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Accept": "application/json"
+                        }
+                    });
+
+           
+            if (response.ok === true) {
+                const bike = await response.json();
+                console.log(await response);
+                    document.getElementById("bikeid").value = bike.id;
+                    document.getElementById("modelid").value = bike.model;
+                    document.getElementById("yearid").value = bike.year;
+                    document.getElementById("priceid").value = bike.price;
+            }
+             else {
+                const error = await response.json();
+                console.log(error);
+            }
+        }
+
+        async function CreateBike(modelid, yearid, priceid) {
+            const response = await fetch("/api/bikes",
+                {
+                    method: "POST",
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ model: modelid, year: parseInt(yearid, 10), price: parseInt(priceid, 10) })
+                });
+
+            if (response.ok === true) {
+                const bike = await response.json();
+                document.querySelector("tbody").append(CreateRow(bike));
+            }
+            else {
+                const error = await response.json();
+                console.log(error);
+            }
+            Reset();
+        }
+
+        async function EditBike(bikeid, modelid, yearid, priceid) {
+            const response = await fetch(`/api/bikes`,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        id: bikeid, model: modelid, year: parseInt(yearid, 10), price: parseInt(priceid, 10)
+                    })
+                });
+
+            if (response.ok === true) {
+                const bike = await response.json();
+                document.querySelector(`tr[data-rowid='${bike.id}']`).replaceWith(CreateRow(bike));
+            }
+            else {
+                const error = await response.json();
+                console.log(error.message);
+            }
+        }
+
+        async function DeleteBike(id) {
+            const response = await fetch(`/api/bikes/${id}`,
+            {
+                method: "DELETE",
+                headers: {
+                    "Accept": "application/json"
+                }
+            });
+
+            if (response.ok === true) {
+                const bike = await response.json();
+                document.querySelector(`tr[data-rowid='${bike.id}']`).remove();
+            }
+            else {
+                const error = await response.json();
+                console.log(error.message);
+            }
+        }
+
+        function Reset() {
+            document.getElementById("bikeid").value = "";
+            document.getElementById("modelid").value = "";
+            document.getElementById("yearid").value = "";
+            document.getElementById("priceid").value = "";
+        }
+
+        async function GetAllBikes()
+        {
+            const response = await fetch("/api/bikes",
+                {
+                    method: "GET",
+                    headers: {
+                        "Accept": "application/json"
+                    },
+                });
+
+            if (response.ok === true) {
+                const bikes = await response.json();
+                const body = document.querySelector("tbody");
+                bikes.forEach(bike => body.append(CreateRow(bike)));
+            }
+            else {
+                const error = await response.json();
+                console.log(error.message);
+            }
+        }
+
+        document.getElementById("resetbtn").addEventListener("click", () => Reset());
+
+        document.getElementById("savebtn").addEventListener("click", async () => {
+            const bikeid = document.getElementById("bikeid").value;
+            const modelid = document.getElementById("modelid").value;
+            const yearid = document.getElementById("yearid").value;
+            const priceid = document.getElementById("priceid").value;
+
+            if (bikeid === "") {
+                await CreateBike(modelid, yearid, priceid);
+            }
+            else {
+                await EditBike(bikeid, modelid, yearid, priceid);
+            }
+            Reset();
+        });
+
+        GetAllBikes();
+
+    </script>
+</body>
+</html>

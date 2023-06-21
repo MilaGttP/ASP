@@ -2,13 +2,6 @@
 using System.Text.RegularExpressions;
 using ASP.Classes;
 
-List<Car> cars = new List<Car>()
-{
-    new Car(Guid.NewGuid().ToString(), "Audi", "A8", 2010),
-    new Car(Guid.NewGuid().ToString(), "Suzuki", "Vitara", 2014),
-    new Car(Guid.NewGuid().ToString(), "BMW", "X5", 2012),
-};
-
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
@@ -17,30 +10,77 @@ app.Run(async (context) =>
     var response = context.Response;
     var request = context.Request;
     var path = context.Request.Path;
-    string expressionForGuid = @"^/api/cars/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$";
+    string expressionForCarsGuid = @"^/api/cars/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$";
+    string expressionForBikesGuid = @"^/api/bikes/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$";
 
-    if (path == "/api/cars" && request.Method == "GET")
+    if (path == "/carstask")
     {
-        await GetAllCars(response);
+        response.ContentType = "text/html; charset=utf-8";
+        await response.SendFileAsync("Pages/cars.html");
     }
-    else if (Regex.IsMatch(path, expressionForGuid) && request.Method == "GET")
+    else if (path == "/bikestask")
     {
-        string id = path.Value?.Split("/")[3];
-        await GetCarById(response, id);
+        response.ContentType = "text/html; charset=utf-8";
+        await response.SendFileAsync("Pages/bikes.html");
+    }
+    else if (path == "/about")
+    {
+        response.ContentType = "text/html; charset=utf-8";
+        await response.SendFileAsync("Pages/about.html");
+    }
+    else if (path == "/home")
+    {
+        response.ContentType = "text/html; charset=utf-8";
+        await response.SendFileAsync("Pages/home.html");
+    }
+
+
+    else if (path == "/api/cars" && request.Method == "GET")
+    {
+        await CarOperations.GetAllCars(response);
+    }
+    else if (Regex.IsMatch(path, expressionForCarsGuid) && request.Method == "GET")
+    {
+        string? id = path.Value?.Split("/")[3];
+        await CarOperations.GetCarById(response, id);
     }
     else if (path == "/api/cars" && request.Method == "POST")
     {
-        await CreateCar(response, request);
+        await CarOperations.CreateCar(response, request);
     }
     else if (path == "/api/cars" && request.Method == "PUT")
     {
-        await UpdateCar(response, request);
+        await CarOperations.UpdateCar(response, request);
     }
-    else if (Regex.IsMatch(path, expressionForGuid) && request.Method == "DELETE")
+    else if (Regex.IsMatch(path, expressionForCarsGuid) && request.Method == "DELETE")
     {
-        string id = path.Value?.Split("/")[3];
-        await DeleteCar(id, response);
+        string? id = path.Value?.Split("/")[3];
+        await CarOperations.DeleteCar(id, response);
     }
+    
+    else if (path == "/api/bikes" && request.Method == "GET")
+    {
+        await BikeOperations.GetAllBikes(response);
+    }
+    else if (Regex.IsMatch(path, expressionForBikesGuid) && request.Method == "GET")
+    {
+        string? id = path.Value?.Split("/")[3];
+        await BikeOperations.GetBikeById(response, id);
+    }
+    else if (path == "/api/bikes" && request.Method == "POST")
+    {
+        await BikeOperations.CreateBike(response, request);
+    }
+    else if (path == "/api/bikes" && request.Method == "PUT")
+    {
+        await BikeOperations.UpdateBike(response, request);
+    }
+    else if (Regex.IsMatch(path, expressionForBikesGuid) && request.Method == "DELETE")
+    {
+        string? id = path.Value?.Split("/")[3];
+        await BikeOperations.DeleteBike(id, response);
+    }
+
     else
     {
         response.ContentType = "text/html; charset=utf-8";
@@ -49,102 +89,3 @@ app.Run(async (context) =>
 });
 
 app.Run();
-
-async Task GetAllCars(HttpResponse httpResponse)
-{
-    await httpResponse.WriteAsJsonAsync(cars);
-}
-
-async Task CreateCar(HttpResponse httpResponse, HttpRequest httpRequest)
-{
-    try
-    {
-        Car car = await httpRequest.ReadFromJsonAsync<Car>();
-        if (car != null)
-        {
-            car.Id = Guid.NewGuid().ToString();
-            cars.Add(car);
-            await httpResponse.WriteAsJsonAsync(car);
-        }
-        else
-        {
-            throw new Exception("Serialization exception");
-        }
-    }
-    catch (Exception ex)
-    {
-        httpResponse.StatusCode = 400;
-        await httpResponse.WriteAsJsonAsync(new { message = ex.Message });
-    }
-}
-
-async Task GetCarById(HttpResponse httpResponse, string id)
-{
-    try
-    {
-        Car? car = cars.FirstOrDefault(x => x.Id == id);
-        if (car != null)
-        {
-            await httpResponse.WriteAsJsonAsync(car);
-        }
-        else
-        {
-            throw new Exception("404 Error!");
-        }
-    }
-    catch (Exception ex)
-    {
-        httpResponse.StatusCode = 404;
-        await httpResponse.WriteAsJsonAsync(new { message = ex.Message });
-    }
-}
-
-async Task UpdateCar(HttpResponse httpResponse, HttpRequest httpRequest)
-{
-    try
-    {
-        Car car = await httpRequest.ReadFromJsonAsync<Car>();
-        if (car != null)
-        {
-            Car oldCar = cars.FirstOrDefault(o => o.Id == car.Id);
-            if (oldCar != null)
-            {
-                oldCar.Brand = car.Brand;
-                oldCar.Model = car.Model;
-                oldCar.Year = car.Year;
-                await httpResponse.WriteAsJsonAsync(oldCar);
-            }
-        }
-        else
-        {
-            throw new Exception("404 Error!");
-        }
-    }
-    catch (Exception ex)
-    {
-        httpResponse.StatusCode = 404;
-        await httpResponse.WriteAsJsonAsync(new { message = ex.Message });
-    }
-}
-
-async Task DeleteCar(string id, HttpResponse httpResponse)
-{
-    try
-    {
-        Car? car = cars.FirstOrDefault((u) => u.Id == id);
-        if (car != null)
-        {
-            cars.Remove(car);
-            await httpResponse.WriteAsJsonAsync(car);
-        }
-        else
-        {
-            throw new Exception("Car not found!");
-        }
-    }
-    catch (Exception ex)
-    {
-        httpResponse.StatusCode = 404;
-        await httpResponse.WriteAsJsonAsync(new { message = ex.Message });
-    }
-}
