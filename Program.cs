@@ -60,7 +60,7 @@ app.Run(async (context) =>
     
     else if (path == "/api/bikes" && request.Method == "GET")
     {
-        await BikeOperations.GetAllBikes(response);
+        await BikeOperations.GetAllBikesPagination(response, 1, 5);
     }
     else if (Regex.IsMatch(path, expressionForBikesGuid) && request.Method == "GET")
     {

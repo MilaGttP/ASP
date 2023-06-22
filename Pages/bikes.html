@@ -3,6 +3,14 @@
 <head>
     <meta charset="utf-8" />
     <title>Bikes task</title>
+    <style>
+        .pag {
+            display: flex;
+            justify-content: space-between;
+            width: 200px;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
     <div>
@@ -25,7 +33,20 @@
         <tbody>
         </tbody>
     </table>
+    <div class="pag">
+        <button id="prevBtn">←</button>
+        <div id="pagination"></div>
+        <button id="nextBtn">→</button>
+    </div> 
     <script>
+
+        let currentPage = 1;
+        const itemsPerPage = 5;
+
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const body = document.querySelector("tbody");
+        const paginationDiv = document.getElementById("pagination");
 
         function CreateRow(bike) {
             const tr = document.createElement("tr");
@@ -60,14 +81,14 @@
 
         async function GetBikeById(id) {
             const response = await fetch(`/api/bikes/${id}`,
-                    {
-                        method: "GET",
-                        headers: {
-                            "Accept": "application/json"
-                        }
-                    });
+                {
+                    method: "GET",
+                    headers: {
+                        "Accept": "application/json"
+                    }
+                });
 
-           
+
             if (response.ok === true) {
                 const bike = await response.json();
                 document.getElementById("bikeid").value = bike.id;
@@ -128,12 +149,12 @@
 
         async function DeleteBike(id) {
             const response = await fetch(`/api/bikes/${id}`,
-            {
-                method: "DELETE",
-                headers: {
-                    "Accept": "application/json"
-                }
-            });
+                {
+                    method: "DELETE",
+                    headers: {
+                        "Accept": "application/json"
+                    }
+                });
 
             if (response.ok === true) {
                 const bike = await response.json();
@@ -152,24 +173,43 @@
             document.getElementById("priceid").value = "";
         }
 
-        async function GetAllBikes()
-        {
-            const response = await fetch("/api/bikes",
-                {
-                    method: "GET",
-                    headers: {
-                        "Accept": "application/json"
-                    },
-                });
+        async function GetAllBikes() {
+            const response = await fetch("/api/bikes", {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json"
+                },
+            });
 
             if (response.ok === true) {
                 const bikes = await response.json();
-                const body = document.querySelector("tbody");
-                bikes.forEach(bike => body.append(CreateRow(bike)));
-            }
-            else {
+                body.innerHTML = "";
+                const startIndex = (currentPage - 1) * itemsPerPage;
+                const endIndex = startIndex + itemsPerPage;
+                bikes.slice(startIndex, endIndex).forEach(bike => body.append(CreateRow(bike)));
+                const totalPages = Math.ceil(bikes.length / itemsPerPage);
+                updatePagination(currentPage, totalPages);
+            } else {
                 const error = await response.json();
                 console.log(error.message);
+            }
+        }
+
+        function updatePagination(currentPage, totalPages) {
+            paginationDiv.innerHTML = "";
+
+            for (let i = 1; i <= totalPages; i++) {
+                const pageLink = document.createElement("a");
+                pageLink.href = "#";
+                pageLink.textContent = i;
+                if (i === currentPage) {
+                    pageLink.classList.add("active");
+                }
+                pageLink.addEventListener("click", () => {
+                    currentPage = i;
+                    GetAllBikes();
+                });
+                paginationDiv.appendChild(pageLink);
             }
         }
 
@@ -188,6 +228,18 @@
                 await EditBike(bikeid, modelid, yearid, priceid);
             }
             Reset();
+        });
+
+        prevBtn.addEventListener("click", () => {
+            if (currentPage > 1) {
+                currentPage--;
+                GetAllBikes();
+            }
+        });
+
+        nextBtn.addEventListener("click", () => {
+            currentPage++;
+            GetAllBikes();
         });
 
         GetAllBikes();

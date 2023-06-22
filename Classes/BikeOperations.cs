@@ -1,16 +1,42 @@
-﻿namespace ASP.Classes
+﻿
+namespace ASP.Classes
 {
     public static class BikeOperations
     {
         static List<Bike> bikes = new List<Bike>()
         {
             new Bike(Guid.NewGuid().ToString(), "Model1", 2021, 9000),
-            new Bike(Guid.NewGuid().ToString(), "Model2", 2022, 10000)
+            new Bike(Guid.NewGuid().ToString(), "Model2", 2022, 10000),
+            new Bike(Guid.NewGuid().ToString(), "Model3", 2022, 10000),
+            new Bike(Guid.NewGuid().ToString(), "Model4", 2022, 14000),
+            new Bike(Guid.NewGuid().ToString(), "Model5", 2020, 10000),
+            new Bike(Guid.NewGuid().ToString(), "Model6", 2018, 12000),
+            new Bike(Guid.NewGuid().ToString(), "Model7", 2022, 10000),
+            new Bike(Guid.NewGuid().ToString(), "Model8", 2022, 10000),
+            new Bike(Guid.NewGuid().ToString(), "Model9", 2022, 10000),
+            new Bike(Guid.NewGuid().ToString(), "Model10", 2022, 10000),
+            new Bike(Guid.NewGuid().ToString(), "Model11", 2018, 10000),
+            new Bike(Guid.NewGuid().ToString(), "Model12", 2022, 15000),
+            new Bike(Guid.NewGuid().ToString(), "Model13", 2022, 16000),
+            new Bike(Guid.NewGuid().ToString(), "Model14", 2017, 11000),
+            new Bike(Guid.NewGuid().ToString(), "Model15", 2022, 17000),
+            new Bike(Guid.NewGuid().ToString(), "Model16", 2022, 10000),
         };
 
-        public static async Task GetAllBikes(HttpResponse httpResponse)
+        public static async Task GetAllBikesPagination(HttpResponse httpResponse, int page, int itemsPerPage)
         {
-            await httpResponse.WriteAsJsonAsync(bikes);
+            try
+            {  
+                var startIndex = (page - 1) * itemsPerPage;
+                var endIndex = startIndex + itemsPerPage;
+                var resultBikes = bikes.Skip(startIndex).Take(itemsPerPage);
+                await httpResponse.WriteAsJsonAsync(resultBikes);
+            }
+            catch (Exception ex)
+            {
+                httpResponse.StatusCode = 500;
+                await httpResponse.WriteAsJsonAsync(new { message = ex.Message });
+            }
         }
 
         public static async Task CreateBike(HttpResponse httpResponse, HttpRequest httpRequest)
