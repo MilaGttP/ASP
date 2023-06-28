@@ -1,29 +1,32 @@
 ﻿
+using Microsoft.AspNetCore.Http;
+using System.Linq;
+
 namespace ASP.Classes
 {
     public static class BikeOperations
     {
         static List<Bike> bikes = new List<Bike>()
         {
-            new Bike(Guid.NewGuid().ToString(), "Model1", 2021, 9000),
-            new Bike(Guid.NewGuid().ToString(), "Model2", 2022, 10000),
-            new Bike(Guid.NewGuid().ToString(), "Model3", 2022, 10000),
-            new Bike(Guid.NewGuid().ToString(), "Model4", 2022, 14000),
-            new Bike(Guid.NewGuid().ToString(), "Model5", 2020, 10000),
-            new Bike(Guid.NewGuid().ToString(), "Model6", 2018, 12000),
-            new Bike(Guid.NewGuid().ToString(), "Model7", 2022, 10000),
-            new Bike(Guid.NewGuid().ToString(), "Model8", 2022, 10000),
-            new Bike(Guid.NewGuid().ToString(), "Model9", 2022, 10000),
-            new Bike(Guid.NewGuid().ToString(), "Model10", 2022, 10000),
-            new Bike(Guid.NewGuid().ToString(), "Model11", 2018, 10000),
-            new Bike(Guid.NewGuid().ToString(), "Model12", 2022, 15000),
-            new Bike(Guid.NewGuid().ToString(), "Model13", 2022, 16000),
-            new Bike(Guid.NewGuid().ToString(), "Model14", 2017, 11000),
-            new Bike(Guid.NewGuid().ToString(), "Model15", 2022, 17000),
-            new Bike(Guid.NewGuid().ToString(), "Model16", 2022, 10000),
+            new Bike(Guid.NewGuid().ToString(), "model1", 2021, 9000),
+            new Bike(Guid.NewGuid().ToString(), "model2", 2022, 10000),
+            new Bike(Guid.NewGuid().ToString(), "model3", 2022, 10000),
+            new Bike(Guid.NewGuid().ToString(), "model4", 2022, 14000),
+            new Bike(Guid.NewGuid().ToString(), "model5", 2020, 10000),
+            new Bike(Guid.NewGuid().ToString(), "model6", 2018, 12000),
+            new Bike(Guid.NewGuid().ToString(), "model7", 2022, 10000),
+            new Bike(Guid.NewGuid().ToString(), "model8", 2022, 10000),
+            new Bike(Guid.NewGuid().ToString(), "model9", 2022, 10000),
+            new Bike(Guid.NewGuid().ToString(), "model10", 2022, 10000),
+            new Bike(Guid.NewGuid().ToString(), "model11", 2018, 10000),
+            new Bike(Guid.NewGuid().ToString(), "model12", 2022, 15000),
+            new Bike(Guid.NewGuid().ToString(), "model13", 2022, 16000),
+            new Bike(Guid.NewGuid().ToString(), "model14", 2017, 11000),
+            new Bike(Guid.NewGuid().ToString(), "model15", 2022, 17000),
+            new Bike(Guid.NewGuid().ToString(), "model16", 2022, 10000),
         };
 
-        public static async Task GetAllBikesPagination(HttpResponse httpResponse, int page, int itemsPerPage)
+        public static async Task GetAllBikes(HttpResponse httpResponse, int page, int itemsPerPage)
         {
             try
             {  
@@ -133,5 +136,18 @@ namespace ASP.Classes
                 await httpResponse.WriteAsJsonAsync(new { message = ex.Message });
             }
         }
+
+        public static async Task GetFilteredBikes(HttpResponse httpResponse, HttpRequest httpRequest)
+        {
+            Bike searchBike = await httpRequest.ReadFromJsonAsync<Bike>();
+            var filteredBikes = bikes.Where(bike =>
+                bike.Model.ToLower().Contains(searchBike.Model.ToLower()) ||
+                (string.IsNullOrEmpty(searchBike.Year.ToString()) || bike.Year.ToString().Contains(searchBike.Year.ToString())) ||
+                (string.IsNullOrEmpty(searchBike.Price.ToString()) || bike.Price.ToString().Contains(searchBike.Price.ToString()))
+            ).ToList();
+
+            await httpResponse.WriteAsJsonAsync(filteredBikes);
+        }
+
     }
 }

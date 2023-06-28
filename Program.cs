@@ -60,8 +60,10 @@ app.Run(async (context) =>
     
     else if (path == "/api/bikes" && request.Method == "GET")
     {
-        await BikeOperations.GetAllBikesPagination(response, 1, 5);
+        await BikeOperations.GetAllBikes(response, 1, 5);
+        //await BikeOperations.GetFilteredBikes(response, request);
     }
+
     else if (Regex.IsMatch(path, expressionForBikesGuid) && request.Method == "GET")
     {
         string? id = path.Value?.Split("/")[3];

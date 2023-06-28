@@ -21,6 +21,13 @@
         <button id="savebtn">Save</button>
         <button id="resetbtn">Reset</button>
     </div>
+    <div>
+        <input id="searchModel" placeholder="Search by model" />
+        <input id="searchYear" placeholder="Search by year" />
+        <input id="searchPrice" placeholder="Search by price" />
+        <button id="searchBtn">Search</button>
+        <button id="resetSearchBtn">Reset</button>
+    </div>
     <table>
         <thead>
             <tr>
@@ -37,7 +44,7 @@
         <button id="prevBtn">←</button>
         <div id="pagination"></div>
         <button id="nextBtn">→</button>
-    </div> 
+    </div>
     <script>
 
         let currentPage = 1;
@@ -47,6 +54,8 @@
         const nextBtn = document.getElementById("nextBtn");
         const body = document.querySelector("tbody");
         const paginationDiv = document.getElementById("pagination");
+        const searchBtn = document.getElementById("searchBtn");
+        const resetSearchBtn = document.getElementById("resetSearchBtn");
 
         function CreateRow(bike) {
             const tr = document.createElement("tr");
@@ -202,15 +211,43 @@
                 const pageLink = document.createElement("a");
                 pageLink.href = "#";
                 pageLink.textContent = i;
-                if (i === currentPage) {
-                    pageLink.classList.add("active");
-                }
                 pageLink.addEventListener("click", () => {
                     currentPage = i;
                     GetAllBikes();
                 });
                 paginationDiv.appendChild(pageLink);
             }
+        }
+
+        async function Search() {
+
+            const response = await fetch("api/bikes", {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json"
+                },
+            });
+
+            if (response.ok === true) {
+                const bikes = await response.json();
+                const searchModel = document.getElementById("searchModel").value.trim();
+                const searchYear = document.getElementById("searchYear").value.trim();
+                const searchPrice = document.getElementById("searchPrice").value.trim();
+
+                const filteredBikes = bikes.filter(bike => {
+                    const modelMatch = bike.model.toLowerCase().includes(searchModel.toLowerCase());
+                    const yearMatch = searchYear === "" || bike.year.toString().includes(searchYear);
+                    const priceMatch = searchPrice === "" || bike.price.toString().includes(searchPrice);
+                    return modelMatch || yearMatch || priceMatch;
+                });
+
+                console.log(filteredBikes);
+                filteredBikes.slice(startIndex, endIndex).forEach(bike => body.append(CreateRow(bike)));
+            }
+            else {
+                const error = await response.json();
+                console.log(error.message);
+            }   
         }
 
         document.getElementById("resetbtn").addEventListener("click", () => Reset());
@@ -239,6 +276,19 @@
 
         nextBtn.addEventListener("click", () => {
             currentPage++;
+            GetAllBikes();
+        });
+
+        searchBtn.addEventListener("click", () => {
+            currentPage = 1;
+            Search();
+        });
+
+        resetSearchBtn.addEventListener("click", () => {
+            document.getElementById("searchModel").value = "";
+            document.getElementById("searchYear").value = "";
+            document.getElementById("searchPrice").value = "";
+            currentPage = 1;
             GetAllBikes();
         });
 
