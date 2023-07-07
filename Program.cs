@@ -1,15 +1,19 @@
-namespace ASP
+
+using ASP;
+
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+
+string login = "user";
+string password = "12345";
+
+if (app.Environment.IsDevelopment())
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
-            var app = builder.Build();
-
-            app.MapGet("/", () => "Hello World!");
-
-            app.Run();
-        }
-    }
+    app.UseDeveloperExceptionPage();
 }
+
+app.UseErrorHandling();
+app.UseCustomAuthentication(login, password);
+app.UseCustomNavigation();
+
+app.Run();
