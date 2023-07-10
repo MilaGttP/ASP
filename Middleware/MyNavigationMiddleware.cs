@@ -25,8 +25,7 @@ namespace ASP
                     break;
 
                 case "/mycredential":
-                    await context.Response.WriteAsJsonAsync($"Login: {context.Request.Query["login"]}, " +
-                        $"Password: {context.Request.Query["passwd"]}");
+                    await context.Response.WriteAsJsonAsync(new UserCredentials(context.Request.Query["login"], context.Request.Query["passwd"]));
                     break;
 
                 default:
@@ -35,4 +34,5 @@ namespace ASP
             }
         }
     }
+    record UserCredentials(string login, string password);
 }
