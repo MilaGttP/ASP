@@ -25,6 +25,7 @@ namespace ASP
                 }
                 await context.Response.WriteAsync(result.ToString());
             }
+            else await context.Response.WriteAsync("Unknown exception...");
         }
 
         private string GetBrowserName(HttpContext context)
