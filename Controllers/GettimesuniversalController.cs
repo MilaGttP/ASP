@@ -7,7 +7,7 @@ namespace ASP
     {
         public IActionResult GetUtcTimes()
         {
-            return Content($"GetUtcTimes: {DateTime.UtcNow.ToShortTimeString()}");
+            return Content($"GetUtcTimes: {DateTime.UtcNow.ToString()}");
         }
 
 
