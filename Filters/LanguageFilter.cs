@@ -36,6 +36,10 @@ namespace ASP
                         context.HttpContext.Response.Headers.Add("Langs", "Ukr");
                         break;
 
+                    case "uk-UA":
+                        context.HttpContext.Response.Headers.Add("Langs", "Ukr");
+                        break;
+
                     case "ru":
                         context.HttpContext.Response.Headers.Add("Langs", "Ukrainian");
                         break;

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ASP
 {
-    [LanguageFilter()]
+    [LanguageFilter]
     public class HomeController : Controller
     {
         public ActionResult Index()
