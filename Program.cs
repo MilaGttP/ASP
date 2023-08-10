@@ -1,15 +1,14 @@
-namespace ASP
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
-            var app = builder.Build();
+var builder = WebApplication.CreateBuilder(args);
 
-            app.MapGet("/", () => "Hello World!");
+builder.Services.AddControllersWithViews();
 
-            app.Run();
-        }
-    }
-}
+var app = builder.Build();
+
+app.UseRouting();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=MyData}"
+    );
+
+app.Run();

@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "MyData";
+}
+
+<form action="/Home/MyDataView" method="post">
+    <label for="surname">Прізвище:</label>
+    <input type="text" id="surname" name="surname" />
+    <br >
+
+    <label for="name">Ім'я:</label>
+    <input type="text" id="name" name="name" />
+    <br>
+
+    <label>По батькові:</label>
+    <input type="text" name="middleName" />
+    <br>
+
+    <label>Стать:</label>
+    <label><input type="radio" name="gender" value="Чоловік" /> Чоловік</label>
+    <label><input type="radio" name="gender" value="Жінка" /> Жінка</label>
+    <br>
+
+    <label>Місто:</label>
+    <select name="city">
+        <option value="Львів">Львів</option>
+        <option value="Київ">Київ</option>
+        <option value="Вінниця">Вінниця</option>
+    </select>
+    <br>
+    <br>
+
+    <label>Хобі:</label>
+    <select name="hobbies" multiple>
+        <option value="Програмування">Програмування</option>
+        <option value="Плавання">Плавання</option>
+        <option value="Читання">Читання</option>
+    </select>
+    <br>
+
+    <label>Дата народження:</label>
+    <input type="date" name="birthDate" />
+    <br>
+    <br>
+
+    <input type="submit" value="Надіслати"/>
+</form>

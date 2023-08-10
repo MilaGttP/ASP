@@ -1,0 +1,10 @@
+﻿
+<h2>Дані з форми MyData</h2>
+
+<p><strong>Прізвище:</strong> @ViewBag.LastName</p>
+<p><strong>Ім'я:</strong> @ViewBag.FirstName</p>
+<p><strong>По батькові:</strong> @ViewBag.MiddleName</p>
+<p><strong>Стать:</strong> @ViewBag.Gender</p>
+<p><strong>Місто:</strong> @ViewBag.City</p>
+<p><strong>Хобі:</strong> @string.Join(", ", ViewBag.Hobbies)</p>
+<p><strong>Дата народження:</strong> @ViewBag.BirthDate?.ToShortDateString()</p>
