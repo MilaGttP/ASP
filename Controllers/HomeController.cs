@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ASP.Models;
+using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
 
 namespace ASP.Controllers
@@ -7,21 +8,16 @@ namespace ASP.Controllers
     {
         public IActionResult MyData()
         {
+            ViewBag.Cities = new string[] { "Львів", "Київ", "Вінниця" };
+            ViewBag.Hobbies = new string[] { "Читання", "Плавання", "Програмування" };
+
             return View();
         }
 
         [HttpPost]
-        public IActionResult MyDataView()
+        public IActionResult _DataPartial(Person model)
         {
-            ViewBag.LastName = HttpContext.Request.Form["surname"];
-            ViewBag.FirstName = HttpContext.Request.Form["name"];
-            ViewBag.MiddleName = HttpContext.Request.Form["middleName"];
-            ViewBag.Gender = HttpContext.Request.Form["gender"];
-            ViewBag.City = HttpContext.Request.Form["city"];
-            ViewBag.Hobbies = HttpContext.Request.Form["hobbies"];
-            ViewBag.BirthDate = DateTime.Parse(HttpContext.Request.Form["birthDate"]);
-
-            return View();
+            return View("_DataPartial", model);
         }
     }
 }

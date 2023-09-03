@@ -1,46 +1,52 @@
-﻿@{
+﻿@model Person
+@{
     ViewData["Title"] = "MyData";
 }
 
-<form action="/Home/MyDataView" method="post">
-    <label for="surname">Прізвище:</label>
-    <input type="text" id="surname" name="surname" />
-    <br >
+@using (Html.BeginForm("_DataPartial", "Home", FormMethod.Post))
+{
+    <fieldset>
+        <legend>Create New Data Form</legend>
 
-    <label for="name">Ім'я:</label>
-    <input type="text" id="name" name="name" />
-    <br>
+        <div>
+            <b>@Html.LabelFor(m => m.Name)</b>
+            @Html.TextBoxFor(m => m.Name)
+        </div>
 
-    <label>По батькові:</label>
-    <input type="text" name="middleName" />
-    <br>
+        <div>
+            <b>@Html.LabelFor(m => m.Surname)</b>
+            @Html.TextBoxFor(m => m.Surname)
+        </div>
 
-    <label>Стать:</label>
-    <label><input type="radio" name="gender" value="Чоловік" /> Чоловік</label>
-    <label><input type="radio" name="gender" value="Жінка" /> Жінка</label>
-    <br>
+        <div>
+            <b>@Html.LabelFor(m => m.MiddleName)</b>
+            @Html.TextBoxFor(m => m.MiddleName)
+        </div>
 
-    <label>Місто:</label>
-    <select name="city">
-        <option value="Львів">Львів</option>
-        <option value="Київ">Київ</option>
-        <option value="Вінниця">Вінниця</option>
-    </select>
-    <br>
-    <br>
+        <div>
+            <b>@Html.LabelFor(m => m.Gender)</b>
+            @Html.RadioButtonFor(m => m.Gender, "Чоловік") <label>Чоловік</label>
+            @Html.RadioButtonFor(m => m.Gender, "Жінка") <label>Жінка</label>
+        </div>
 
-    <label>Хобі:</label>
-    <select name="hobbies" multiple>
-        <option value="Програмування">Програмування</option>
-        <option value="Плавання">Плавання</option>
-        <option value="Читання">Читання</option>
-    </select>
-    <br>
+        <div>
+            <b>@Html.LabelFor(m => m.City)</b>
+            @Html.DropDownList("City", new SelectList(ViewBag.Cities))
+        </div>
 
-    <label>Дата народження:</label>
-    <input type="date" name="birthDate" />
-    <br>
-    <br>
+        <div>
+            <b>@Html.LabelFor(m => m.Hobbies)</b>
+            @Html.ListBoxFor(m => m.Hobbies, new MultiSelectList(ViewBag.Hobbies))
+        </div>
 
-    <input type="submit" value="Надіслати"/>
-</form>
+        <div>
+            <b>@Html.LabelFor(m => m.Birthday)</b>
+            @Html.TextBoxFor(m => m.Birthday, "", new { type = "date" })
+        </div>
+
+        <br />
+
+        <input type="submit" value="Надіслати" />
+
+    </fieldset>
+}

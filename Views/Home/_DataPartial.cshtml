@@ -1,0 +1,11 @@
+﻿
+@model Person
+<h2>Дані з форми MyData</h2>
+
+<p><strong>Прізвище:</strong> @Model.Surname</p>
+<p><strong>Ім'я:</strong> @Model.Name</p>
+<p><strong>По батькові:</strong> @Model.MiddleName</p>
+<p><strong>Стать:</strong> @Model.Gender</p>
+<p><strong>Місто:</strong> @Model.City</p>
+<p><strong>Хобі:</strong> @string.Join(", ", Model.Hobbies)</p>
+<p><strong>Дата народження:</strong> @Model.Birthday.ToShortDateString()</p>
