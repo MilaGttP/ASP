@@ -3,50 +3,48 @@
     ViewData["Title"] = "MyData";
 }
 
-@using (Html.BeginForm("_DataPartial", "Home", FormMethod.Post))
-{
+<form asp-controller="Home" asp-action="_DataPartial" method="post">
     <fieldset>
         <legend>Create New Data Form</legend>
 
         <div>
-            <b>@Html.LabelFor(m => m.Name)</b>
-            @Html.TextBoxFor(m => m.Name)
+            <label asp-for="Name"></label>
+            <input asp-for="Name" />
         </div>
 
         <div>
-            <b>@Html.LabelFor(m => m.Surname)</b>
-            @Html.TextBoxFor(m => m.Surname)
+            <label asp-for="Surname"></label>
+            <input asp-for="Surname" />
         </div>
 
         <div>
-            <b>@Html.LabelFor(m => m.MiddleName)</b>
-            @Html.TextBoxFor(m => m.MiddleName)
+            <label asp-for="MiddleName"></label>
+            <input asp-for="MiddleName" />
         </div>
 
         <div>
-            <b>@Html.LabelFor(m => m.Gender)</b>
-            @Html.RadioButtonFor(m => m.Gender, "Чоловік") <label>Чоловік</label>
-            @Html.RadioButtonFor(m => m.Gender, "Жінка") <label>Жінка</label>
+            <label asp-for="Gender"></label>
+            <input type="radio" asp-for="Gender" value="Чоловік" /> <label>Чоловік</label>
+            <input type="radio" asp-for="Gender" value="Жінка" /> <label>Жінка</label>
         </div>
 
         <div>
-            <b>@Html.LabelFor(m => m.City)</b>
-            @Html.DropDownList("City", new SelectList(ViewBag.Cities))
+            <label asp-for="City"></label>
+            <select asp-for="City" asp-items="new SelectList(ViewBag.Cities)"></select>
         </div>
 
         <div>
-            <b>@Html.LabelFor(m => m.Hobbies)</b>
-            @Html.ListBoxFor(m => m.Hobbies, new MultiSelectList(ViewBag.Hobbies))
+            <label asp-for="Hobbies"></label>
+            <select asp-for="Hobbies" asp-items="new MultiSelectList(ViewBag.Hobbies)"></select>
         </div>
 
         <div>
-            <b>@Html.LabelFor(m => m.Birthday)</b>
-            @Html.TextBoxFor(m => m.Birthday, "", new { type = "date" })
+            <label asp-for="Birthday"></label>
+            <input asp-for="Birthday" type="date" />
         </div>
 
         <br />
 
         <input type="submit" value="Надіслати" />
-
     </fieldset>
-}
+</form>
