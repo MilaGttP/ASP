@@ -73,16 +73,16 @@
                 @Html.DisplayFor(modelItem => item.Pressrun)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Format.Id)
+                @Html.DisplayFor(modelItem => item.Format.Format)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Izd.Id)
+                @Html.DisplayFor(modelItem => item.Izd.Izd)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Kategory.Id)
+                @Html.DisplayFor(modelItem => item.Kategory.Category)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Themes.Id)
+                @Html.DisplayFor(modelItem => item.Themes.Themes)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.N">Edit</a> |

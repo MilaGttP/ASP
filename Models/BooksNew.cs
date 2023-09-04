@@ -1,39 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace ASP.Models;
 
 public partial class BooksNew
 {
+
     public int N { get; set; }
 
+    [DisplayName("Код")]
     public double? Code { get; set; }
 
-    public bool New { get; set; }
+	[DisplayName("Нова?")]
+	public bool New { get; set; }
 
-    public string? Name { get; set; }
+	[DisplayName("Назва")]
+	public string? Name { get; set; }
 
-    public decimal? Price { get; set; }
+	[DisplayName("Ціна")]
+	public decimal? Price { get; set; }
 
-    public double? Pages { get; set; }
+	[DisplayName("Сторінки")]
+	public double? Pages { get; set; }
 
-    public DateTime? Date { get; set; }
+	[DisplayName("Дата")]
+	public DateTime? Date { get; set; }
 
-    public double? Pressrun { get; set; }
+	[DisplayName("Копії")]
+	public double? Pressrun { get; set; }
 
-    public int? IzdId { get; set; }
+	[DisplayName("Видавництво")]
+	public int? IzdId { get; set; }
 
-    public int? FormatId { get; set; }
+	[DisplayName("Формат")]
+	public int? FormatId { get; set; }
 
-    public int? ThemesId { get; set; }
+	[DisplayName("Теми")]
+	public int? ThemesId { get; set; }
 
-    public int? KategoryId { get; set; }
+	[DisplayName("Категорія")]
+	public int? KategoryId { get; set; }
 
-    public virtual SprFormat? Format { get; set; }
+	[DisplayName("Формат")]
+	public virtual SprFormat? Format { get; set; }
 
-    public virtual SprIzd? Izd { get; set; }
+	[DisplayName("Видавництво")]
+	public virtual SprIzd? Izd { get; set; }
 
-    public virtual SprKategory? Kategory { get; set; }
+	[DisplayName("Категорія")]
+	public virtual SprKategory? Kategory { get; set; }
 
-    public virtual SprTheme? Themes { get; set; }
+	[DisplayName("Теми")]
+	public virtual SprTheme? Themes { get; set; }
 }

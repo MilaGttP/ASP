@@ -46,10 +46,10 @@ namespace ASP.Controllers
         // GET: Home/Create
         public IActionResult Create()
         {
-            ViewData["FormatId"] = new SelectList(_context.SprFormats, "Id", "Id");
-            ViewData["IzdId"] = new SelectList(_context.SprIzds, "Id", "Id");
-            ViewData["KategoryId"] = new SelectList(_context.SprKategories, "Id", "Id");
-            ViewData["ThemesId"] = new SelectList(_context.SprThemes, "Id", "Id");
+            ViewData["FormatId"] = new SelectList(_context.SprFormats, "Id", "Format");
+            ViewData["IzdId"] = new SelectList(_context.SprIzds, "Id", "Izd");
+            ViewData["KategoryId"] = new SelectList(_context.SprKategories, "Id", "Category");
+            ViewData["ThemesId"] = new SelectList(_context.SprThemes, "Id", "Themes");
             return View();
         }
 
@@ -66,10 +66,10 @@ namespace ASP.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["FormatId"] = new SelectList(_context.SprFormats, "Id", "Id", booksNew.FormatId);
-            ViewData["IzdId"] = new SelectList(_context.SprIzds, "Id", "Id", booksNew.IzdId);
-            ViewData["KategoryId"] = new SelectList(_context.SprKategories, "Id", "Id", booksNew.KategoryId);
-            ViewData["ThemesId"] = new SelectList(_context.SprThemes, "Id", "Id", booksNew.ThemesId);
+            ViewData["FormatId"] = new SelectList(_context.SprFormats, "Id", "Format", booksNew.FormatId);
+            ViewData["IzdId"] = new SelectList(_context.SprIzds, "Id", "Izd", booksNew.IzdId);
+            ViewData["KategoryId"] = new SelectList(_context.SprKategories, "Id", "Category", booksNew.KategoryId);
+            ViewData["ThemesId"] = new SelectList(_context.SprThemes, "Id", "Themes", booksNew.ThemesId);
             return View(booksNew);
         }
 
@@ -86,10 +86,10 @@ namespace ASP.Controllers
             {
                 return NotFound();
             }
-            ViewData["FormatId"] = new SelectList(_context.SprFormats, "Id", "Id", booksNew.FormatId);
-            ViewData["IzdId"] = new SelectList(_context.SprIzds, "Id", "Id", booksNew.IzdId);
-            ViewData["KategoryId"] = new SelectList(_context.SprKategories, "Id", "Id", booksNew.KategoryId);
-            ViewData["ThemesId"] = new SelectList(_context.SprThemes, "Id", "Id", booksNew.ThemesId);
+            ViewData["FormatId"] = new SelectList(_context.SprFormats, "Id", "Format", booksNew.FormatId);
+            ViewData["IzdId"] = new SelectList(_context.SprIzds, "Id", "Izd", booksNew.IzdId);
+            ViewData["KategoryId"] = new SelectList(_context.SprKategories, "Id", "Category", booksNew.KategoryId);
+            ViewData["ThemesId"] = new SelectList(_context.SprThemes, "Id", "Themes", booksNew.ThemesId);
             return View(booksNew);
         }
 
@@ -125,10 +125,10 @@ namespace ASP.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["FormatId"] = new SelectList(_context.SprFormats, "Id", "Id", booksNew.FormatId);
-            ViewData["IzdId"] = new SelectList(_context.SprIzds, "Id", "Id", booksNew.IzdId);
-            ViewData["KategoryId"] = new SelectList(_context.SprKategories, "Id", "Id", booksNew.KategoryId);
-            ViewData["ThemesId"] = new SelectList(_context.SprThemes, "Id", "Id", booksNew.ThemesId);
+            ViewData["FormatId"] = new SelectList(_context.SprFormats, "Id", "Format", booksNew.FormatId);
+            ViewData["IzdId"] = new SelectList(_context.SprIzds, "Id", "Izd", booksNew.IzdId);
+            ViewData["KategoryId"] = new SelectList(_context.SprKategories, "Id", "Category", booksNew.KategoryId);
+            ViewData["ThemesId"] = new SelectList(_context.SprThemes, "Id", "Themes", booksNew.ThemesId);
             return View(booksNew);
         }
 
