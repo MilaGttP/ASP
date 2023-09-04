@@ -1,0 +1,95 @@
+﻿@model IEnumerable<ASP.Models.BooksNew>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.New)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Pages)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Pressrun)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Format)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Izd)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Kategory)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Themes)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.New)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pages)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pressrun)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Format.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Izd.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Kategory.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Themes.Id)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.N">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.N">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.N">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
