@@ -25,9 +25,6 @@ public partial class BooksContext : DbContext
 
     public virtual DbSet<SprTheme> SprThemes { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Server=WIN-DB5IFPI2TC8\\SQLEXPRESS;Database=books;Trusted_Connection=True;Encrypt=False");
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<BooksNew>(entity =>
