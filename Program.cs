@@ -1,6 +1,13 @@
 var builder = WebApplication.CreateBuilder(args);
-var app = builder.Build();
+builder.Services.AddRazorPages();
 
-app.MapGet("/", () => "Hello World!");
+builder.Services.AddRazorPages()
+	.AddRazorPagesOptions(options =>
+	{
+		options.Conventions.AddPageRoute("/MyData", "");
+	});
+
+var app = builder.Build();
+app.MapRazorPages();
 
 app.Run();

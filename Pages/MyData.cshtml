@@ -1,0 +1,48 @@
+﻿@page
+@model ASP.Pages.MyDataModel
+
+<form asp-action="MyDataView" method="post">
+    <fieldset>
+        <legend>Create New Data Form</legend>
+
+        <div>
+            <label asp-for="Name"></label>
+            <input asp-for="Name" />
+        </div>
+
+        <div>
+            <label asp-for="Surname"></label>
+            <input asp-for="Surname" />
+        </div>
+
+        <div>
+            <label asp-for="MiddleName"></label>
+            <input asp-for="MiddleName" />
+        </div>
+
+        <div>
+            <label asp-for="Gender"></label>
+            <input type="radio" asp-for="Gender" value="Чоловік" /> <label>Чоловік</label>
+            <input type="radio" asp-for="Gender" value="Жінка" /> <label>Жінка</label>
+        </div>
+
+        <div>
+            <label asp-for="City"></label>
+            <select asp-for="City" asp-items="@(ViewData["Cities"] as IEnumerable<SelectListItem>)"></select>
+        </div>
+
+        <div>
+            <label asp-for="Hobbies"></label>
+            <select asp-for="Hobbies" asp-items="@(ViewData["Hobbies"] as IEnumerable<SelectListItem>)"></select>
+        </div>
+
+        <div>
+            <label asp-for="Birthday"></label>
+            <input asp-for="Birthday" type="date" />
+        </div>
+
+        <br />
+
+        <input type="submit" value="Надіслати" />
+    </fieldset>
+</form>
