@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ASP.Models.BooksNew>
+﻿@model PaginatedList<BooksNew>
 
 @{
     ViewData["Title"] = "Index";
@@ -7,89 +7,37 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Code)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.New)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Pages)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Pressrun)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Format)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Izd)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Kategory)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Themes)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Code)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.New)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Pages)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Pressrun)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Format.Format)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Izd.Izd)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Kategory.Category)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Themes.Themes)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.N">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.N">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.N">Delete</a>
-            </td>
-        </tr>
+
+<form asp-action="IndexData"
+      data-ajax="true"
+      data-ajax-update="#Tabledata"
+      data-ajax-method="GET">
+    <div class="form-actions no-color">
+        <p>
+            Find by name: <input type="text" name="SearchString" value=@ViewData["CurrentFilter"] />
+
+            Records Per Page: <input type="number" name="RecordsPerPage" value=@TempData.Peek("RecordsPerPage") />
+            <input type="submit" value="Search Or SetPageSize" class="btn btn-primary" /> |
+
+            <a asp-action="IndexData"
+               asp-route-RecordsPerPage=@TempData.Peek("RecordsPerPage")
+               data-ajax="true"
+               data-ajax-update="#Tabledata"
+               data-ajax-method="GET">
+                Back to Full List
+            </a>
+        </p>
+    </div>
+
+    <table class="table" id="Tabledata">
+        @{
+            await Html.RenderPartialAsync("IndexData", Model);
+        }
+    </table>
+</form>
+
+@section scripts {
+    <script src="~/lib/jquery.unobtrusive-ajax/jquery.unobtrusive-ajax.min.js"></script>
 }
-    </tbody>
-</table>

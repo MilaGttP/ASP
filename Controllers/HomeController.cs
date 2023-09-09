@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ASP.Models;
+using ASP.Data;
 
 namespace ASP.Controllers
 {
@@ -14,11 +15,88 @@ namespace ASP.Controllers
             _context = context;
         }
 
-        // GET: Home
-        public async Task<IActionResult> Index()
+        private async Task<PaginatedList<BooksNew>> PrepareData(
+                string sortOrder,
+                string SearchString,
+                int? pageNumber,
+                int? RecordsPerPage)
         {
-            var booksContext = _context.BooksNews.Include(b => b.Format).Include(b => b.Izd).Include(b => b.Kategory).Include(b => b.Themes);
-            return View(await booksContext.ToListAsync());
+            if (sortOrder == null) sortOrder = "name_asc";
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParam"] = sortOrder == "name_asc" ? "name_desc" : "name_asc";
+            ViewData["IzdSortParam"] = sortOrder == "firstname_asc" ? "firstname_desc" : "firstname_asc";
+            ViewData["CategorySortParam"] = sortOrder == "date_asc" ? "date_desc" : "date_asc";
+
+            int pageSize;
+            if (RecordsPerPage == null && TempData.Peek("RecordsPerPage") == null)
+            {
+                pageSize = 3;
+                TempData["RecordsPerPage"] = pageSize;
+            }
+            else if (RecordsPerPage != null)
+            {
+                pageSize = (int)RecordsPerPage;
+                TempData["RecordsPerPage"] = pageSize;
+            }
+            else int.TryParse(TempData.Peek("RecordsPerPage")?.ToString(), out pageSize);
+
+
+            ViewData["CurrentFilter"] = SearchString;
+
+            var students = from s in _context.BooksNews
+                           select s;
+            if (!string.IsNullOrEmpty(SearchString))
+            {
+                students = students.Where(s => s.Name.Contains(SearchString)
+                                       || s.Izd.Izd.Contains(SearchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    students = students.OrderByDescending(s => s.Name);
+                    break;
+                case "firstname_desc":
+                    students = students.OrderByDescending(s => s.Izd.Izd);
+                    break;
+                case "name_asc":
+                    students = students.OrderBy(s => s.Name);
+                    break;
+                case "firstname_asc":
+                    students = students.OrderBy(s => s.Izd.Izd);
+                    break;
+                case "date_asc":
+                    students = students.OrderBy(s => s.Date);
+                    break;
+                case "date_desc":
+                    students = students.OrderByDescending(s => s.Date);
+                    break;
+                default:
+                    students = students.OrderBy(s => s.Name);
+                    break;
+            }
+
+            return await PaginatedList<BooksNew>.CreateAsync(students.AsNoTracking(), pageNumber ?? 1, pageSize);
+        }
+
+        // GET: Home
+        public async Task<IActionResult> Index(
+             string sortOrder,
+             string SearchString,
+             int? pageNumber,
+             int? RecordsPerPage)
+        {
+            return View(await PrepareData(sortOrder, SearchString, pageNumber, RecordsPerPage));
+        }
+
+        // GET: Home
+        public async Task<IActionResult> Indexdata(
+            string sortOrder,
+            string SearchString,
+            int? pageNumber,
+            int? RecordsPerPage)
+        {
+            return PartialView(await PrepareData(sortOrder, SearchString, pageNumber, RecordsPerPage));
         }
 
         // GET: Home/Details/5

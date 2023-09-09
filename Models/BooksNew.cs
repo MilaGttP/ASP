@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ASP.Models;
 
@@ -15,7 +16,8 @@ public partial class BooksNew
 	[DisplayName("Нова?")]
 	public bool New { get; set; }
 
-	[DisplayName("Назва")]
+    [Column("Name")]
+    [DisplayName("Назва")]
 	public string? Name { get; set; }
 
 	[DisplayName("Ціна")]
@@ -30,7 +32,8 @@ public partial class BooksNew
 	[DisplayName("Копії")]
 	public double? Pressrun { get; set; }
 
-	[DisplayName("Видавництво")]
+    [Column("Izd")]
+    [DisplayName("Видавництво")]
 	public int? IzdId { get; set; }
 
 	[DisplayName("Формат")]
@@ -39,16 +42,19 @@ public partial class BooksNew
 	[DisplayName("Теми")]
 	public int? ThemesId { get; set; }
 
-	[DisplayName("Категорія")]
+    [Column("Category")]
+    [DisplayName("Категорія")]
 	public int? KategoryId { get; set; }
 
 	[DisplayName("Формат")]
 	public virtual SprFormat? Format { get; set; }
 
-	[DisplayName("Видавництво")]
+    [Column("Izd")]
+    [DisplayName("Видавництво")]
 	public virtual SprIzd? Izd { get; set; }
 
-	[DisplayName("Категорія")]
+    [Column("Category")]
+    [DisplayName("Категорія")]
 	public virtual SprKategory? Kategory { get; set; }
 
 	[DisplayName("Теми")]
