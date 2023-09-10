@@ -1,0 +1,45 @@
+﻿@model ASP.Pages.IndexModel
+
+@foreach (var item in Model.BooksNew)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Code)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.New)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Pages)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Pressrun)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Format.Format)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Izd.Izd)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Kategory.Category)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Themes.Themes)
+                    </td>
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@item.N">Edit</a> |
+                        <a asp-page="./Details" asp-route-id="@item.N">Details</a> |
+                        <a asp-page="./Delete" asp-route-id="@item.N">Delete</a>
+                    </td>
+                </tr>
+}

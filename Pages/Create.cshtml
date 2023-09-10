@@ -1,0 +1,79 @@
+﻿@page
+@model ASP.Pages.CreateModel
+
+<h4>BooksNew</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="BooksNew.N" class="control-label"></label>
+                <input asp-for="BooksNew.N" class="form-control" />
+                <span asp-validation-for="BooksNew.N" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BooksNew.Code" class="control-label"></label>
+                <input asp-for="BooksNew.Code" class="form-control" />
+                <span asp-validation-for="BooksNew.Code" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="BooksNew.New" /> @Html.DisplayNameFor(model => model.BooksNew.New)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="BooksNew.Name" class="control-label"></label>
+                <input asp-for="BooksNew.Name" class="form-control" />
+                <span asp-validation-for="BooksNew.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BooksNew.Price" class="control-label"></label>
+                <input asp-for="BooksNew.Price" class="form-control" />
+                <span asp-validation-for="BooksNew.Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BooksNew.Pages" class="control-label"></label>
+                <input asp-for="BooksNew.Pages" class="form-control" />
+                <span asp-validation-for="BooksNew.Pages" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BooksNew.Date" class="control-label"></label>
+                <input asp-for="BooksNew.Date" class="form-control" type="date" />
+                <span asp-validation-for="BooksNew.Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BooksNew.Pressrun" class="control-label"></label>
+                <input asp-for="BooksNew.Pressrun" class="form-control" />
+                <span asp-validation-for="BooksNew.Pressrun" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BooksNew.IzdId" class="control-label"></label>
+                <select asp-for="BooksNew.IzdId" class ="form-control" asp-items="ViewBag.IzdId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="BooksNew.FormatId" class="control-label"></label>
+                <select asp-for="BooksNew.FormatId" class ="form-control" asp-items="ViewBag.FormatId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="BooksNew.ThemesId" class="control-label"></label>
+                <select asp-for="BooksNew.ThemesId" class ="form-control" asp-items="ViewBag.ThemesId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="BooksNew.KategoryId" class="control-label"></label>
+                <select asp-for="BooksNew.KategoryId" class ="form-control" asp-items="ViewBag.KategoryId"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

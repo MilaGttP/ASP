@@ -1,0 +1,157 @@
+﻿@page
+@model ASP.Pages.IndexModel
+
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<br/>
+
+<form asp-page-handler="Post"
+      data-ajax-begin="onBegin" data-ajax-complete="onComplete"
+      data-ajax-failure="onFailed" data-ajax-success="onSuccess"
+      data-ajax="true"
+      data-ajax-update="#Tabledata"
+      data-ajax-method="POST">
+    <input type="text" asp-for="SearchString" />
+    <select  asp-items="@(new SelectList(Model.FiltersList))" asp-for="FilterValue">
+    </select>
+    <table class="table table-hover">
+        <thead >
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.BooksNew[0].Code)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BooksNew[0].New)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BooksNew[0].Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BooksNew[0].Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BooksNew[0].Pages)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BooksNew[0].Date)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BooksNew[0].Pressrun)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BooksNew[0].Format)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BooksNew[0].Izd.Izd)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BooksNew[0].Kategory.Category)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BooksNew[0].Themes.Themes)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="Tabledata">
+       @foreach (var item in Model.BooksNew)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Code)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.New)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Pages)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Pressrun)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Format.Format)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Izd.Izd)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Kategory.Category)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Themes.Themes)
+                    </td>
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@item.N">Edit</a> 
+                        <a asp-page="./Details" asp-route-id="@item.N">Details</a> 
+                        <a asp-page="./Delete" asp-route-id="@item.N">Delete</a>
+                    </td>
+                </tr>
+        }
+        </tbody>
+</table>
+</form>
+
+@section scripts
+{
+    <script src="~/lib/jquery.unobtrusive-ajax/jquery.unobtrusive-ajax.min.js"></script>
+
+    <script type="text/javascript">
+
+        var target = $("#Tabledata");
+
+
+        var onBegin = function () {
+            console.log("onBegin ");
+        };
+
+        var onComplete = function () {
+            console.log("onComplete ");
+        };
+
+        var onSuccess = function (context) {
+            console.log("onSuccess");
+            ParseResponse(context);
+        };
+
+        var onFailed = function (context) {
+
+        };
+
+       
+
+        function ParseResponse(res) {
+
+            target.empty();
+            for (let i = 0; i < res.length; i++) {
+
+                const hrefDelete = `./Delete/${res[i].n}`;
+                const hrefEdit = `./Edit/${res[i].n}`;
+                const hrefDetails = `./Details/${res[i].n}`;
+
+                target.append("<tr><td>" + res[i].code + "</td><td>" + `<input type="checkbox" value=${res[i].new}/>` + "</td><td>"
+                    + res[i].name + "</td><td>" + res[i].price + "</td><td>"
+                    + res[i].pages + "</td><td>" + res[i].date + "</td><td>" + res[i].pressrun
+                    + "</td><td>" + res[i].format.format + "</td><td>" + res[i].izd.izd + "</td><td>"
+                    + res[i].kategory.category + "</td><td>" + res[i].themes.themes +
+                    "</td><td>" + `<a href=${hrefEdit}>Edit</a>|` + 
+                    `<a href=${hrefDelete}>Delete</a>|` + 
+                    `<a href=${hrefDetails}>Details</a>` +"</td></tr>");
+            }
+        }
+
+    </script>
+}
+
+

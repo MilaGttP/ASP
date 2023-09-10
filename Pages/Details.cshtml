@@ -1,0 +1,79 @@
+﻿@page "{id?}"
+@model ASP.Pages.DetailsModel
+
+<div>
+    <h4>BooksNew</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BooksNew.Code)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BooksNew.Code)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BooksNew.New)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BooksNew.New)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BooksNew.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BooksNew.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BooksNew.Price)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BooksNew.Price)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BooksNew.Pages)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BooksNew.Pages)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BooksNew.Date)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BooksNew.Date)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BooksNew.Pressrun)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BooksNew.Pressrun)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BooksNew.Format)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BooksNew.Format.Format)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BooksNew.Izd)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BooksNew.Izd.Izd)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BooksNew.Kategory)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BooksNew.Kategory.Category)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BooksNew.Themes)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BooksNew.Themes.Themes)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.BooksNew?.N">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>
