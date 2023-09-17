@@ -1,0 +1,214 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products CRUD</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Products CRUD</h1>
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <h2>Add Product</h2>
+                <form id="addProductForm">
+                    <div class="form-group">
+                        <label for="productName">Name:</label>
+                        <input type="text" class="form-control" id="productName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productPrice">Price:</label>
+                        <input type="number" class="form-control" id="productPrice" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productQuantity">Quantity:</label>
+                        <input type="number" class="form-control" id="productQuantity" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Product</button>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <h2>Product List</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productList">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальне вікно редагування продукту -->
+    <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="editProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProductModalLabel">Edit Product</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editProductForm">
+                        <div class="form-group">
+                            <label for="editProductId">ID:</label>
+                            <input type="text" class="form-control" id="editProductId" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="editProductName">Name:</label>
+                            <input type="text" class="form-control" id="editProductName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editProductPrice">Price:</label>
+                            <input type="number" class="form-control" id="editProductPrice" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editProductQuantity">Quantity:</label>
+                            <input type="number" class="form-control" id="editProductQuantity" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: '/api/Products',
+                type: 'GET',
+                success: function (data) {
+                    updateProductTable(data);
+                }
+            });
+
+            $('#addProductForm').submit(function (event) {
+                event.preventDefault();
+                var productName = $('#productName').val();
+                var productPrice = $('#productPrice').val();
+                var productQuantity = $('#productQuantity').val();
+
+                $.ajax({
+                    url: '/api/Products',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        name: productName,
+                        price: productPrice,
+                        quantity: productQuantity
+                    }),
+                    success: function () {
+                        $('#productName').val('');
+                        $('#productPrice').val('');
+                        $('#productQuantity').val('');
+
+                        $.ajax({
+                            url: '/api/Products',
+                            type: 'GET',
+                            success: function (data) {
+                                updateProductTable(data);
+                            }
+                        });
+                    }
+                });
+            });
+
+            function updateProductTable(products) {
+                var productList = $('#productList');
+                productList.empty();
+
+                $.each(products, function (index, product) {
+                    var row = '<tr>' +
+                        '<td>' + product.id + '</td>' +
+                        '<td>' + product.name + '</td>' +
+                        '<td>' + product.price + '</td>' +
+                        '<td>' + product.quantity + '</td>' +
+                        '<td>' +
+                        '<button class="btn btn-warning btn-sm" onclick="editProduct(' + product.id + ')">Edit</button> ' +
+                        '<button class="btn btn-danger btn-sm" onclick="deleteProduct(' + product.id + ')">Delete</button>' +
+                        '</td>' +
+                        '</tr>';
+                    productList.append(row);
+                });
+            }
+
+            function deleteProduct(id) {
+                $.ajax({
+                    url: '/api/Products/' + id,
+                    type: 'DELETE',
+                    success: function () {
+                        $.ajax({
+                            url: '/api/Products',
+                            type: 'GET',
+                            success: function (data) {
+                                updateProductTable(data);
+                            }
+                        });
+                    }
+                });
+            }
+
+            function editProduct(id) {
+                $.ajax({
+                    url: '/api/Products/' + id,
+                    type: 'GET',
+                    success: function (product) {
+                        $('#editProductId').val(product.id);
+                        $('#editProductName').val(product.name);
+                        $('#editProductPrice').val(product.price);
+                        $('#editProductQuantity').val(product.quantity);
+
+                        $('#editProductModal').modal('show');
+                    }
+                });
+            }
+
+            $('#editProductForm').submit(function (event) {
+                event.preventDefault();
+                var id = $('#editProductId').val();
+                var name = $('#editProductName').val();
+                var price = $('#editProductPrice').val();
+                var quantity = $('#editProductQuantity').val();
+
+                $.ajax({
+                    url: '/api/Products/' + id,
+                    type: 'PUT',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        id: id,
+                        name: name,
+                        price: price,
+                        quantity: quantity
+                    }),
+                    success: function () {
+                        $('#editProductModal').modal('hide');
+
+                        $.ajax({
+                            url: '/api/Products',
+                            type: 'GET',
+                            success: function (data) {
+                                updateProductTable(data);
+                            }
+                        });
+                    }
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>
